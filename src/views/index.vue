@@ -1,4 +1,37 @@
-<script setup></script>
+<script setup>
+	import { ref, useTemplateRef } from 'vue'
+	import { useRoute } from 'vue-router'
+	import Pointer from '@components/Pointer.vue'
+
+	const route = useRoute()
+	const inputRef = useTemplateRef('input')
+	const buttonRef = useTemplateRef('button')
+	const timer = ref(0)
+	const searchValue = ref('')
+
+	if (route.query.query) {
+		setInterval(() => {
+			timer.value += 100
+		}, 100)
+	}
+
+	function generate() {}
+
+	function submit(num) {
+		switch (num) {
+			case 1:
+				searchValue.value = route.query.query
+				break
+			case 2:
+				setTimeout(() => {
+					window.location.href = 'https://www.baidu.com/s?wd=' + route.query.query
+				}, 3000)
+				break
+			default:
+				break
+		}
+	}
+</script>
 
 <template>
 	<div class="always-container">
@@ -23,26 +56,45 @@
 			<img class="logo" src="@assets/svg/baidu.svg" alt="baidu logo" srcset="" />
 			<div class="input-container">
 				<div>
-					<input class="input" type="text" placeholder="百度一下，你就知道" />
-					<button>百度一下</button>
+					<input v-model="searchValue" ref="input" class="input" type="text" placeholder="让我帮你百度一下，你就知道" />
+					<button ref="button" @click="generate">百度一下</button>
 				</div>
+			</div>
+			<div class="desc" v-if="route.query.query">
+				<span v-if="timer <= 2500">让我来教你怎么使用</span>
+				<span v-else-if="timer <= 4500">输入搜索内容</span>
+				<span v-else-if="timer <= 6500">然后点击“百度一下”</span>
+				<span v-else>这不是很简单吗</span>
 			</div>
 		</div>
 		<div class="footer-container">
-			<a href="https://home.baidu.com/" target="_blank">关于百度</a>
-			<a href="https://ir.baidu.com/" target="_blank">About Baidu</a>
-			<a href="https://www.baidu.com/duty/" target="_blank">使用百度前必读</a>
-			<a href="https://help.baidu.com/question?prod_id=1" target="_blank">帮助中心</a>
-			<a href="https://e.baidu.com/?refer=1271" target="_blank">企业推广</a>
-			<a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=11000002000001" target="_blank">
-				京公网安备11000002000001号
-			</a>
-			<a href="https://beian.miit.gov.cn/" target="_blank">京ICP证030173号</a>
-			<a href="javascript:" target="_blank">互联网新闻信息服务许可证11220180008</a>
-			<a href="javascript:" target="_blank">网络文化经营许可证： 京网文〔2023〕1034-029号</a>
-			<a href="https://www.baidu.com/licence/" target="_blank">信息网络传播视听节目许可证 0110516</a>
-			<a href="javascript:" target="_blank">互联网宗教信息服务许可证编号：京（2022）0000043</a>
+			<div>
+				<a href="javascript:" target="_blank">
+					本站与百度Baidu没有任何联系，站内出现的所有内容包括但不限于商标、链接均为【百度公司】所属。
+				</a>
+			</div>
+			<div>
+				<a href="https://home.baidu.com/" target="_blank">关于百度</a>
+				<a href="https://ir.baidu.com/" target="_blank">About Baidu</a>
+				<a href="https://www.baidu.com/duty/" target="_blank">使用百度前必读</a>
+				<a href="https://help.baidu.com/question?prod_id=1" target="_blank">帮助中心</a>
+				<a href="https://e.baidu.com/?refer=1271" target="_blank">企业推广</a>
+				<a href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=11000002000001" target="_blank">
+					京公网安备11000002000001号
+				</a>
+				<a href="https://beian.miit.gov.cn/" target="_blank">京ICP证030173号</a>
+				<a href="javascript:" target="_blank">互联网新闻信息服务许可证11220180008</a>
+				<a href="javascript:" target="_blank">网络文化经营许可证： 京网文〔2023〕1034-029号</a>
+				<a href="https://www.baidu.com/licence/" target="_blank">信息网络传播视听节目许可证 0110516</a>
+				<a href="javascript:" target="_blank">互联网宗教信息服务许可证编号：京（2022）0000043</a>
+			</div>
 		</div>
+		<Pointer
+			v-if="timer >= 2000 && route.query.query && inputRef"
+			:inputElement="inputRef"
+			:buttonElement="buttonRef"
+			@end="submit"
+		/>
 	</div>
 </template>
 
@@ -84,9 +136,9 @@
 			margin: 20px auto;
 			padding: 1px;
 			max-width: 800px;
-			height: 56px;
 			border-radius: 12px;
 			background-image: linear-gradient(136deg, #286aff, #4e6ef2, #7274f9, #9f66ff);
+			box-shadow: 0 13px 18px -15px rgba(77, 128, 255, 0.2);
 			> div {
 				overflow: hidden;
 				padding: 6px;
@@ -97,11 +149,11 @@
 				border-radius: 10px;
 				background-color: white;
 				input {
-					min-width: 0;
+					min-width: 10px;
 					font-size: 16px;
 					padding: 0 12px;
-					vertical-align: middle;
 					border: none;
+					height: 46px;
 				}
 				button {
 					font-size: 16px;
@@ -118,6 +170,10 @@
 				}
 			}
 		}
+		.desc {
+			text-align: center;
+			color: #272b32;
+		}
 	}
 	.footer-container {
 		overflow: hidden;
@@ -126,15 +182,20 @@
 		left: 0;
 		width: 100%;
 		font-size: 12px;
-		padding: 20px;
+		padding: 20px 20px 30px 20px;
 		text-align: center;
-		a {
-			margin: 0 4px;
-			display: inline-block;
-			color: #bbb;
-			white-space: normal;
-			&:hover {
-				color: #272b32;
+		> div {
+			&:not(:first-child) {
+				margin-top: 6px;
+			}
+			a {
+				margin: 0 4px;
+				display: inline-block;
+				color: #bbb;
+				white-space: normal;
+				&:hover {
+					color: #272b32;
+				}
 			}
 		}
 	}
