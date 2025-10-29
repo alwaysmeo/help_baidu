@@ -1,0 +1,8 @@
+$color-primary: #0052d9;
+$color-success: #00a870;
+$color-warning: #ed7b2f;
+$color-error: #e34d59;
+@use '@assets/styles/base.scss';
+@use '@assets/styles/transition.scss';
+@use '@assets/styles/modal.scss';
+@use '@assets/styles/message.scss';

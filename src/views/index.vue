@@ -1,6 +1,8 @@
 <script setup>
 	import { ref, useTemplateRef } from 'vue'
 	import { useRoute } from 'vue-router'
+	import { Modal } from '@hooks/modal'
+	import { Message } from '@hooks/message'
 	import Pointer from '@components/Pointer.vue'
 
 	const route = useRoute()
@@ -15,7 +17,18 @@
 		}, 100)
 	}
 
-	function generate() {}
+	function generate() {
+		if (!searchValue.value) return Message.warning('请先输入搜索内容')
+		Modal.confirm({
+			title: '复制链接分享',
+			content: `${window.location.href}?query=${searchValue.value}`,
+			confirmText: '复制',
+			onConfirm: () => {
+				navigator.clipboard.writeText(`${window.location.href}?query=${searchValue.value}`)
+				Message.success('复制成功')
+			},
+		})
+	}
 
 	function submit(num) {
 		switch (num) {
@@ -24,7 +37,7 @@
 				break
 			case 2:
 				setTimeout(() => {
-					window.location.href = 'https://www.baidu.com/s?wd=' + route.query.query
+					window.location.href = `https://www.baidu.com/s?wd=${route.query.query}`
 				}, 3000)
 				break
 			default:

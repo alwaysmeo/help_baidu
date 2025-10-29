@@ -1,0 +1,57 @@
+.mask-container {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	background-color: #070e244d;
+	z-index: 3000;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	backdrop-filter: blur(2px);
+}
+
+#global-container {
+	.modal-confirm-container {
+		overflow: hidden;
+		margin: 0 30px;
+		border-radius: 8px;
+		min-width: 300px;
+		max-width: 500px;
+		font-size: 14px;
+		text-align: center;
+		background-color: white;
+		box-shadow: 0 2px 12px #030d181f;
+		.modal-confirm-header-container {
+			padding: 20px 20px 0 20px;
+			color: #272b32;
+			font-weight: 700;
+		}
+		.modal-confirm-main-container {
+			padding: 20px;
+			color: #aaa;
+			border-bottom: 1px solid #eee;
+		}
+		.modal-confirm-footer-container {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			p {
+				width: 1px;
+				height: 50px;
+				background-color: #eee;
+			}
+			button {
+				padding: 15px 20px;
+				width: 100%;
+				background-color: transparent;
+				transition: all 0.3s ease-in-out;
+				cursor: pointer;
+				&:hover {
+					background-color: #f5f6f7;
+				}
+			}
+		}
+	}
+}
