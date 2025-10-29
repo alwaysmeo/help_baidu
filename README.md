@@ -4,7 +4,7 @@
 
 ## 预览图
 
-![预览图](./assets/images/preview.png)
+![预览图](https://github.com/alwaysmeo/help_baidu/blob/master/src/assets/images/preview.png)
 
 ## 项目设置
 
