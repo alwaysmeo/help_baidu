@@ -4,6 +4,7 @@
 	import { Modal } from '@hooks/modal'
 	import { Message } from '@hooks/message'
 	import Pointer from '@components/Pointer.vue'
+	import Cipboard from 'copy-to-clipboard'
 
 	const route = useRoute()
 	const inputRef = useTemplateRef('input')
@@ -24,7 +25,7 @@
 			content: `${window.location.href}?query=${searchValue.value}`,
 			confirmText: '复制',
 			onConfirm: () => {
-				navigator.clipboard.writeText(`${window.location.href}?query=${searchValue.value}`)
+				Cipboard(`${window.location.href}?query=${searchValue.value}`)
 				Message.success('复制成功')
 			},
 		})
